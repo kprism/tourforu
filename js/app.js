@@ -14,6 +14,8 @@
   const routes = {
     home: renderHome,
     destination: renderDestination,
+    hotel: renderHotelDetail,
+    food: renderFoodDetail,
     keeper: renderKeeper,
     call: renderCall,
     vehicles: renderVehicles,
@@ -257,8 +259,12 @@
       `;
     }
 
+    const detailRoute = type === "hotel" ? "hotel" : "food";
+
     return `
-      <article class="mini-card">
+      <article class="mini-card"
+               data-route="${detailRoute}"
+               data-id="${escapeHtml(item.id)}">
         <img src="${escapeHtml(item.image)}"
              alt="${escapeHtml(item.name)}">
         <div class="mini-card-body">
@@ -378,6 +384,206 @@
 
   function findDestination(id) {
     return data.destinations.find(item => item.id === id) || data.destinations[0];
+  }
+
+  function findHotel(id) {
+    return data.hotels.find(item => item.id === id) || data.hotels[0];
+  }
+
+  function findFood(id) {
+    return data.foods.find(item => item.id === id) || data.foods[0];
+  }
+
+  function renderHotelDetail(params) {
+    const item = findHotel(params.get("id"));
+
+    const content = `
+      <section class="detail-main-image">
+        <img src="${escapeHtml(item.image)}"
+             alt="${escapeHtml(item.name)}">
+
+        <div class="detail-main-overlay">
+          <span class="pill">🏨 AI 추천 숙박</span>
+          <h1>${escapeHtml(item.name)}</h1>
+          <p>${escapeHtml(item.address)}</p>
+        </div>
+      </section>
+
+      <div class="stat-grid">
+        <div class="stat">
+          <small>1박 가격</small>
+          <strong>${escapeHtml(item.price)}</strong>
+        </div>
+        <div class="stat">
+          <small>관광지 거리</small>
+          <strong>${escapeHtml(item.distance)}</strong>
+        </div>
+        <div class="stat">
+          <small>평점</small>
+          <strong>★ ${item.rating}</strong>
+        </div>
+        <div class="stat">
+          <small>이용후기</small>
+          <strong>${escapeHtml(item.reviews)}</strong>
+        </div>
+      </div>
+
+      <section class="destination-intro">
+        <span class="tag">TOURFORU AI 숙박 추천</span>
+        <h1>${escapeHtml(item.name)}</h1>
+        <p>${escapeHtml(item.description)}</p>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <div>
+            <h2>숙박 핵심정보</h2>
+            <p>예약 전 확인해야 할 내용을 모았습니다.</p>
+          </div>
+        </div>
+
+        <div class="detail-feature-grid">
+          <article class="detail-feature">
+            <span>🕒</span>
+            <strong>체크인</strong>
+            <small>${escapeHtml(item.checkin)}부터 입실 가능</small>
+          </article>
+
+          <article class="detail-feature">
+            <span>🧳</span>
+            <strong>체크아웃</strong>
+            <small>${escapeHtml(item.checkout)}까지 퇴실</small>
+          </article>
+
+          <article class="detail-feature">
+            <span>🚐</span>
+            <strong>이동 편의</strong>
+            <small>주요 관광지까지 약 ${escapeHtml(item.distance)}</small>
+          </article>
+        </div>
+      </section>
+
+      <section class="summary-card">
+        <h2 style="margin:0 0 8px;font-size:16px">AI 숙박 평가</h2>
+        <ul class="summary-list">
+          <li><span>위치 적합도</span><strong>매우 좋음</strong></li>
+          <li><span>가족여행</span><strong>추천</strong></li>
+          <li><span>차량 접근성</span><strong>편리</strong></li>
+          <li><span>후기 신뢰도</span><strong>높음</strong></li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <button class="primary-button"
+                type="button"
+                data-route="call">
+          🚐 이 숙박을 포함해 차량·일정 만들기
+        </button>
+      </section>
+    `;
+
+    app.innerHTML = shell(content, {
+      title: "숙박 상세",
+      subtitle: "AI STAY",
+      back: true,
+      active: ""
+    });
+  }
+
+  function renderFoodDetail(params) {
+    const item = findFood(params.get("id"));
+
+    const content = `
+      <section class="detail-main-image">
+        <img src="${escapeHtml(item.image)}"
+             alt="${escapeHtml(item.name)}">
+
+        <div class="detail-main-overlay">
+          <span class="pill">🍲 AI 추천 음식</span>
+          <h1>${escapeHtml(item.name)}</h1>
+          <p>${escapeHtml(item.address)}</p>
+        </div>
+      </section>
+
+      <div class="stat-grid">
+        <div class="stat">
+          <small>대표 가격</small>
+          <strong>${escapeHtml(item.price)}</strong>
+        </div>
+        <div class="stat">
+          <small>관광지 거리</small>
+          <strong>${escapeHtml(item.distance)}</strong>
+        </div>
+        <div class="stat">
+          <small>평점</small>
+          <strong>★ ${item.rating}</strong>
+        </div>
+        <div class="stat">
+          <small>이용후기</small>
+          <strong>${escapeHtml(item.reviews)}</strong>
+        </div>
+      </div>
+
+      <section class="destination-intro">
+        <span class="tag">TOURFORU AI 맛집 추천</span>
+        <h1>${escapeHtml(item.name)}</h1>
+        <p>${escapeHtml(item.description)}</p>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <div>
+            <h2>꼭 확인하세요</h2>
+            <p>대표 메뉴와 방문 정보를 정리했습니다.</p>
+          </div>
+        </div>
+
+        <div class="detail-feature-grid">
+          <article class="detail-feature">
+            <span>🍽️</span>
+            <strong>대표 메뉴</strong>
+            <small>${escapeHtml(item.menu)}</small>
+          </article>
+
+          <article class="detail-feature">
+            <span>🕒</span>
+            <strong>영업시간</strong>
+            <small>${escapeHtml(item.hours)}</small>
+          </article>
+
+          <article class="detail-feature">
+            <span>📍</span>
+            <strong>위치</strong>
+            <small>${escapeHtml(item.address)}</small>
+          </article>
+        </div>
+      </section>
+
+      <section class="summary-card">
+        <h2 style="margin:0 0 8px;font-size:16px">AI 음식점 평가</h2>
+        <ul class="summary-list">
+          <li><span>현지성</span><strong>매우 높음</strong></li>
+          <li><span>여행 동선</span><strong>적합</strong></li>
+          <li><span>가족 이용</span><strong>추천</strong></li>
+          <li><span>후기 신뢰도</span><strong>높음</strong></li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <button class="primary-button"
+                type="button"
+                data-route="call">
+          🚐 이 음식점을 포함해 여행일정 만들기
+        </button>
+      </section>
+    `;
+
+    app.innerHTML = shell(content, {
+      title: "음식 상세",
+      subtitle: "AI FOOD",
+      back: true,
+      active: ""
+    });
   }
 
   function renderDestination(params) {
@@ -1408,6 +1614,11 @@
 
       if (route === "vehicle-detail" && id) {
         state.selectedVehicle = id;
+        go(route, { id });
+        return;
+      }
+
+      if ((route === "hotel" || route === "food") && id) {
         go(route, { id });
         return;
       }

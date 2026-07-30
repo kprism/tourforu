@@ -88,7 +88,13 @@ window.TOURFORU_DATA = {
 
   hotels: [
     {
+      id: "tongyeong-oceanview-stay",
       name: "통영 오션뷰 스테이",
+      type: "hotel",
+      address: "경남 통영시 산양읍",
+      description: "통영 앞바다를 바라보며 머물 수 있는 오션뷰 숙소입니다. 관광지 이동 동선이 짧고 가족 여행객의 만족도가 높은 곳입니다.",
+      checkin: "15:00",
+      checkout: "11:00",
       price: "128,000원",
       distance: "12분",
       rating: 4.8,
@@ -96,7 +102,13 @@ window.TOURFORU_DATA = {
       image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=85"
     },
     {
+      id: "geoje-marina-resort",
       name: "거제 마리나 리조트",
+      type: "hotel",
+      address: "경남 거제시 일운면",
+      description: "마리나와 해안 산책로를 함께 이용할 수 있는 리조트입니다. 커플과 가족 단위 여행에 적합합니다.",
+      checkin: "15:00",
+      checkout: "11:00",
       price: "164,000원",
       distance: "18분",
       rating: 4.7,
@@ -104,7 +116,13 @@ window.TOURFORU_DATA = {
       image: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=85"
     },
     {
+      id: "namhae-forest-pension",
       name: "남해 숲속 펜션",
+      type: "hotel",
+      address: "경남 남해군 남면",
+      description: "숲과 바다 사이에서 조용하게 쉬어갈 수 있는 독채형 펜션입니다. 장기 체류와 느린 여행에 어울립니다.",
+      checkin: "16:00",
+      checkout: "11:00",
       price: "96,000원",
       distance: "22분",
       rating: 4.6,
@@ -115,7 +133,13 @@ window.TOURFORU_DATA = {
 
   foods: [
     {
+      id: "tongyeong-sea-table",
       name: "통영 바다 한상",
+      type: "food",
+      address: "경남 통영시 중앙동",
+      description: "통영 제철 해산물과 지역 음식을 한 상으로 즐길 수 있는 현지식 식당입니다.",
+      menu: "해산물 한상 · 충무김밥 · 생선구이",
+      hours: "11:00~21:00",
       price: "25,000원",
       distance: "8분",
       rating: 4.8,
@@ -123,7 +147,13 @@ window.TOURFORU_DATA = {
       image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=85"
     },
     {
+      id: "geoje-seafood-pot",
       name: "거제 해물뚝배기",
+      type: "food",
+      address: "경남 거제시 일운면",
+      description: "싱싱한 해산물을 매콤하고 뜨끈한 뚝배기로 내는 거제 대표 현지 음식점입니다.",
+      menu: "해물뚝배기 · 멍게비빔밥 · 생선구이",
+      hours: "10:30~20:30",
       price: "18,000원",
       distance: "11분",
       rating: 4.7,
@@ -131,7 +161,13 @@ window.TOURFORU_DATA = {
       image: "https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=800&q=85"
     },
     {
+      id: "namhae-anchovy-ssambap",
       name: "남해 멸치쌈밥",
+      type: "food",
+      address: "경남 남해군 남면",
+      description: "남해의 대표 식재료인 멸치를 조림과 쌈밥으로 즐기는 지역 향토 음식점입니다.",
+      menu: "멸치쌈밥 · 멸치회무침 · 갈치구이",
+      hours: "10:00~20:00",
       price: "16,000원",
       distance: "15분",
       rating: 4.6,
