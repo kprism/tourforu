@@ -216,5 +216,86 @@ window.TOURFORU_DATA = {
       reviews: "후기 164",
       image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1000&q=85"
     }
+  ],
+
+  guides: [
+    {
+      id: "guide-bluewave",
+      nickname: "푸른물결",
+      realName: "김민수",
+      safePhone: "0504-1824-1001",
+      region: "통영시",
+      nearby: "미륵산에서 12분",
+      careerYears: 6,
+      tourCount: 428,
+      rating: 4.9,
+      educationCompleted: true,
+      languages: ["한국어", "영어"],
+      intro: "통영의 섬과 골목, 드라마 촬영지를 중심으로 이야기 여행을 안내합니다.",
+      reviews: [
+        "아이들과 함께 듣기 좋은 설명이었습니다.",
+        "사진 촬영 지점을 세심하게 알려줬어요.",
+        "관광객이 붐비지 않는 시간대를 잘 안내했습니다."
+      ],
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=85"
+    },
+    {
+      id: "guide-seagull",
+      nickname: "통영갈매기",
+      realName: "박정훈",
+      safePhone: "0504-1824-1002",
+      region: "통영시",
+      nearby: "미륵산에서 18분",
+      careerYears: 3,
+      tourCount: 186,
+      rating: 4.8,
+      educationCompleted: true,
+      languages: ["한국어", "일본어"],
+      intro: "통영의 음식과 전통시장, 근대문화 이야기를 편안하게 소개합니다.",
+      reviews: [
+        "현지 음식점을 취향에 맞게 추천해줬어요.",
+        "어르신과 함께 이동하기 편한 코스를 짜줬습니다."
+      ],
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=85"
+    },
+    {
+      id: "guide-greenwind",
+      nickname: "초록바람",
+      realName: "이서연",
+      safePhone: "0504-1824-1003",
+      region: "거제시",
+      nearby: "바람의 언덕에서 9분",
+      careerYears: 5,
+      tourCount: 351,
+      rating: 4.9,
+      educationCompleted: true,
+      languages: ["한국어", "영어", "중국어"],
+      intro: "거제 자연여행과 가족 체험 코스를 전문으로 안내합니다.",
+      reviews: [
+        "아이들이 지루하지 않게 설명해줬습니다.",
+        "관광지 이동 순서가 매우 효율적이었어요."
+      ],
+      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=85"
+    },
+    {
+      id: "guide-slowtrip",
+      nickname: "느린여행자",
+      realName: "최현우",
+      safePhone: "0504-1824-1004",
+      region: "남해군",
+      nearby: "다랭이마을에서 14분",
+      careerYears: 2,
+      tourCount: 94,
+      rating: 4.7,
+      educationCompleted: false,
+      languages: ["한국어"],
+      intro: "남해의 마을과 산책길을 천천히 걷는 소규모 여행을 안내합니다.",
+      reviews: [
+        "말수가 많지 않고 차분해서 좋았습니다.",
+        "사진을 찍을 시간을 충분히 줬어요."
+      ],
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=85"
+    }
   ]
+
 };

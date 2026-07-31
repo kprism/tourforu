@@ -4,18 +4,69 @@
   const app = document.getElementById("app");
   const data = window.TOURFORU_DATA;
 
+  const STORAGE_KEY = "tourforu-prototype-state-v1";
+
+  function readPrototypeState() {
+    const defaults = {
+      keptItems: [
+        "destination:tongyeong-mireuksan",
+        "destination:geoje-windyhill",
+        "hotel:tongyeong-oceanview-stay",
+        "food:tongyeong-sea-table"
+      ],
+      selectedTripItems: [
+        "destination:tongyeong-mireuksan",
+        "destination:geoje-windyhill"
+      ],
+      liked: [],
+      selectedDestination: "tongyeong-mireuksan",
+      selectedVehicle: "carnival-premium",
+      selectedGuide: "",
+      driveType: "driver"
+    };
+
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      return { ...defaults, ...saved };
+    } catch (error) {
+      console.warn("프로토타입 상태를 불러오지 못했습니다.", error);
+      return defaults;
+    }
+  }
+
+  const storedState = readPrototypeState();
+
   const state = {
-    saved: new Set(["tongyeong-mireuksan", "geoje-windyhill"]),
-    liked: new Set(),
-    selectedDestination: "tongyeong-mireuksan",
-    selectedVehicle: "carnival-premium"
+    keptItems: new Set(storedState.keptItems),
+    selectedTripItems: new Set(storedState.selectedTripItems),
+    liked: new Set(storedState.liked),
+    selectedDestination: storedState.selectedDestination,
+    selectedVehicle: storedState.selectedVehicle,
+    selectedGuide: storedState.selectedGuide,
+    driveType: storedState.driveType
   };
+
+  function persistState() {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        keptItems: [...state.keptItems],
+        selectedTripItems: [...state.selectedTripItems],
+        liked: [...state.liked],
+        selectedDestination: state.selectedDestination,
+        selectedVehicle: state.selectedVehicle,
+        selectedGuide: state.selectedGuide,
+        driveType: state.driveType
+      })
+    );
+  }
 
   const routes = {
     home: renderHome,
     destination: renderDestination,
     hotel: renderHotelDetail,
     food: renderFoodDetail,
+    "guide-match": renderGuideMatch,
     keeper: renderKeeper,
     call: renderCall,
     vehicles: renderVehicles,
@@ -50,6 +101,131 @@
   function go(page, params = {}) {
     const query = new URLSearchParams(params).toString();
     location.hash = `#/${page}${query ? `?${query}` : ""}`;
+  }
+
+  function keepKey(type, id) {
+    return `${type}:${id}`;
+  }
+
+  function isKept(type, id) {
+    return state.keptItems.has(keepKey(type, id));
+  }
+
+  function isTripSelected(type, id) {
+    return state.selectedTripItems.has(keepKey(type, id));
+  }
+
+  function toggleKeep(type, id) {
+    const key = keepKey(type, id);
+
+    if (state.keptItems.has(key)) {
+      state.keptItems.delete(key);
+      state.selectedTripItems.delete(key);
+    } else {
+      state.keptItems.add(key);
+    }
+
+    persistState();
+  }
+
+  function getGuide(id) {
+    return data.guides.find(item => item.id === id) || null;
+  }
+
+  function getKeepItem(key) {
+    const [type, id] = key.split(":");
+
+    if (type === "destination") {
+      const item = data.destinations.find(value => value.id === id);
+      return item
+        ? {
+            type,
+            id,
+            title: item.title,
+            region: `${item.city} ${item.district}`,
+            meta: `${item.time} · 체류 ${item.stay}`,
+            image: item.image,
+            route: "destination",
+            icon: "🎡",
+            typeLabel: "관광지"
+          }
+        : null;
+    }
+
+    if (type === "hotel") {
+      const item = data.hotels.find(value => value.id === id);
+      return item
+        ? {
+            type,
+            id,
+            title: item.name,
+            region: item.address,
+            meta: `${item.price} · 관광지에서 ${item.distance}`,
+            image: item.image,
+            route: "hotel",
+            icon: "🏨",
+            typeLabel: "숙박"
+          }
+        : null;
+    }
+
+    if (type === "food") {
+      const item = data.foods.find(value => value.id === id);
+      return item
+        ? {
+            type,
+            id,
+            title: item.name,
+            region: item.address,
+            meta: `${item.price} · ${item.distance}`,
+            image: item.image,
+            route: "food",
+            icon: "🍲",
+            typeLabel: "음식"
+          }
+        : null;
+    }
+
+    if (type === "guide") {
+      const item = data.guides.find(value => value.id === id);
+      return item
+        ? {
+            type,
+            id,
+            title: item.nickname,
+            region: item.region,
+            meta: `경력 ${item.careerYears}년 · ${item.tourCount}회 · ★ ${item.rating}`,
+            image: item.image,
+            route: "guide-match",
+            icon: "🧑‍🏫",
+            typeLabel: "가이드"
+          }
+        : null;
+    }
+
+    return null;
+  }
+
+  function keptItems() {
+    return [...state.keptItems]
+      .map(getKeepItem)
+      .filter(Boolean);
+  }
+
+  function keepButton(type, id, label = "KEEP") {
+    const active = isKept(type, id);
+
+    return `
+      <button class="keep-3d-button ${active ? "active" : ""}"
+              type="button"
+              data-action="toggle-keep"
+              data-type="${escapeHtml(type)}"
+              data-id="${escapeHtml(id)}"
+              aria-pressed="${active}">
+        <span class="keep-3d-icon">${active ? "🧳" : "📌"}</span>
+        <span>${active ? "KEEP됨" : label}</span>
+      </button>
+    `;
   }
 
   function shell(content, options = {}) {
@@ -161,7 +337,7 @@
 
   function feedCard(item) {
     const liked = state.liked.has(item.id);
-    const saved = state.saved.has(item.id);
+    const saved = isKept("destination", item.id);
 
     return `
       <article class="feed-card">
@@ -219,12 +395,11 @@
             </button>
           </div>
 
-          <button class="feed-action"
-                  type="button"
-                  data-action="save"
-                  data-id="${escapeHtml(item.id)}">
-            ${saved ? "🧳 저장됨" : "🔖 키퍼"}
-          </button>
+          ${keepButton(
+            "destination",
+            item.id,
+            saved ? "KEEP됨" : "KEEP"
+          )}
         </div>
 
         <div class="feed-caption">
@@ -245,11 +420,16 @@
         <article class="mini-card"
                  data-route="destination"
                  data-id="${escapeHtml(item.id)}">
-          <img src="${escapeHtml(item.image)}"
-               alt="${escapeHtml(item.title)}">
+          <div class="mini-media-wrap">
+            <img src="${escapeHtml(item.image)}"
+                 alt="${escapeHtml(item.title)}">
+            ${keepButton("destination", item.id)}
+          </div>
+
           <div class="mini-card-body">
             <h3>${escapeHtml(item.title)}</h3>
             <p>${escapeHtml(item.city)} · ${escapeHtml(item.distance)} · ${escapeHtml(item.time)}</p>
+
             <div class="price-row">
               <span class="rating">★ ${item.rating}</span>
               <strong>${escapeHtml(item.cost)}</strong>
@@ -265,11 +445,16 @@
       <article class="mini-card"
                data-route="${detailRoute}"
                data-id="${escapeHtml(item.id)}">
-        <img src="${escapeHtml(item.image)}"
-             alt="${escapeHtml(item.name)}">
+        <div class="mini-media-wrap">
+          <img src="${escapeHtml(item.image)}"
+               alt="${escapeHtml(item.name)}">
+          ${keepButton(type, item.id)}
+        </div>
+
         <div class="mini-card-body">
           <h3>${escapeHtml(item.name)}</h3>
           <p>${escapeHtml(item.distance)} · ${escapeHtml(item.reviews)}</p>
+
           <div class="price-row">
             <span class="rating">★ ${item.rating}</span>
             <strong>${escapeHtml(item.price)}</strong>
@@ -474,11 +659,14 @@
       </section>
 
       <section class="section">
-        <button class="primary-button"
-                type="button"
-                data-route="call">
-          🚐 이 숙박을 포함해 차량·일정 만들기
-        </button>
+        <div class="detail-action-grid">
+          ${keepButton("hotel", item.id)}
+          <button class="primary-button"
+                  type="button"
+                  data-route="keeper">
+            🧳 키핑 목록에서 일정 선택
+          </button>
+        </div>
       </section>
     `;
 
@@ -570,11 +758,14 @@
       </section>
 
       <section class="section">
-        <button class="primary-button"
-                type="button"
-                data-route="call">
-          🚐 이 음식점을 포함해 여행일정 만들기
-        </button>
+        <div class="detail-action-grid">
+          ${keepButton("food", item.id)}
+          <button class="primary-button"
+                  type="button"
+                  data-route="keeper">
+            🧳 키핑 목록에서 일정 선택
+          </button>
+        </div>
       </section>
     `;
 
@@ -752,11 +943,14 @@
       </section>
 
       <section class="section">
-        <button class="primary-button"
-                type="button"
-                data-route="call">
-          🚐 이 관광지를 포함해 차량 찾기
-        </button>
+        <div class="detail-action-grid">
+          ${keepButton("destination", item.id)}
+          <button class="primary-button"
+                  type="button"
+                  data-route="keeper">
+            🧳 키핑 목록에서 일정 선택
+          </button>
+        </div>
       </section>
     `;
 
@@ -769,7 +963,13 @@
   }
 
   function renderKeeper() {
-    const savedItems = data.destinations.filter(item => state.saved.has(item.id));
+    const items = keptItems();
+    const groupedTypes = [
+      ["destination", "🎡 관광지"],
+      ["hotel", "🏨 숙박"],
+      ["food", "🍲 음식"],
+      ["guide", "🧑‍🏫 가이드"]
+    ];
 
     const content = `
       <section class="section">
@@ -777,76 +977,116 @@
           <div class="ai-orb">🧳</div>
           <div>
             <small>MY TRAVEL KEEPER</small>
-            <h2>${savedItems.length}곳을 보관하고 있어요</h2>
-            <p>체류시간과 이동동선을 선택하면 AI가 여행 순서를 정리합니다.</p>
+            <h2>${items.length}개를 이번 여행 후보로 보관 중</h2>
+            <p>KEEP한 항목 중 실제 방문할 곳만 체크해 차량과 AI 일정을 만듭니다.</p>
           </div>
         </div>
       </section>
 
-      <section class="section">
-        <div class="section-title">
-          <div>
-            <h2>저장한 관광지</h2>
-            <p>목적지를 복수 선택할 수 있습니다.</p>
-          </div>
-        </div>
+      <section class="keeper-guide-box">
+        <strong>사용방법</strong>
+        <p>
+          KEEP은 관심목록이고, 체크박스는 이번 여행에 실제로 포함할 항목입니다.
+          숙박과 음식도 이동 동선에 함께 반영됩니다.
+        </p>
+      </section>
 
-        ${savedItems.length ? savedItems.map(item => `
-          <article class="form-card">
-            <div style="display:grid;grid-template-columns:82px 1fr;gap:10px">
-              <img src="${escapeHtml(item.image)}"
-                   alt="${escapeHtml(item.title)}"
-                   style="width:82px;height:82px;object-fit:cover;border-radius:13px">
+      ${groupedTypes.map(([type, label]) => {
+        const typeItems = items.filter(item => item.type === type);
 
+        if (!typeItems.length) {
+          return "";
+        }
+
+        return `
+          <section class="section keeper-type-section">
+            <div class="section-title">
               <div>
-                <span class="tag">${escapeHtml(item.city)}</span>
-                <h3 style="margin:6px 0 4px;font-size:14px">
-                  ${escapeHtml(item.title)}
-                </h3>
-                <p style="margin:0;color:var(--muted);font-size:9px">
-                  ${escapeHtml(item.time)} · 체류 ${escapeHtml(item.stay)}
-                </p>
-
-                <div style="display:flex;margin-top:8px;gap:6px">
-                  <button class="feed-action"
-                          type="button"
-                          data-route="destination"
-                          data-id="${escapeHtml(item.id)}">상세</button>
-                  <button class="feed-action"
-                          type="button"
-                          data-action="remove-save"
-                          data-id="${escapeHtml(item.id)}">삭제</button>
-                </div>
+                <h2>${label}</h2>
+                <p>${typeItems.length}개 KEEP</p>
               </div>
             </div>
-          </article>
-        `).join("") : `
-          <div class="empty-state">
-            <div class="ai-orb">🗺️</div>
-            <h2>아직 저장한 여행지가 없어요</h2>
-            <p>홈에서 마음에 드는 관광지를 여행키퍼에 담아보세요.</p>
-          </div>
-        `}
+
+            ${typeItems.map(item => `
+              <article class="keeper-item">
+                <label class="keeper-check">
+                  <input type="checkbox"
+                         data-action="toggle-trip-item"
+                         data-type="${escapeHtml(item.type)}"
+                         data-id="${escapeHtml(item.id)}"
+                         ${isTripSelected(item.type, item.id) ? "checked" : ""}>
+                  <span class="keeper-checkbox-ui">✓</span>
+                </label>
+
+                <img src="${escapeHtml(item.image)}"
+                     alt="${escapeHtml(item.title)}">
+
+                <div class="keeper-item-body">
+                  <div class="keeper-item-type">
+                    ${item.icon} ${escapeHtml(item.typeLabel)}
+                  </div>
+
+                  <strong>${escapeHtml(item.title)}</strong>
+                  <small>${escapeHtml(item.region)}</small>
+                  <p>${escapeHtml(item.meta)}</p>
+
+                  <div class="keeper-item-actions">
+                    <button type="button"
+                            data-route="${escapeHtml(item.route)}"
+                            data-id="${escapeHtml(item.id)}">
+                      상세
+                    </button>
+
+                    <button type="button"
+                            data-action="toggle-keep"
+                            data-type="${escapeHtml(item.type)}"
+                            data-id="${escapeHtml(item.id)}">
+                      KEEP 해제
+                    </button>
+                  </div>
+                </div>
+              </article>
+            `).join("")}
+          </section>
+        `;
+      }).join("")}
+
+      ${!items.length ? `
+        <div class="empty-state">
+          <div class="ai-orb">🗺️</div>
+          <h2>아직 KEEP한 항목이 없어요</h2>
+          <p>관광지·숙박·음식 카드의 KEEP 버튼을 눌러 보관해보세요.</p>
+        </div>
+      ` : ""}
+
+      <section class="keeper-selection-summary">
+        <span>이번 여행 선택</span>
+        <strong>${state.selectedTripItems.size}개</strong>
       </section>
 
       <section class="section">
         <button class="primary-button"
                 type="button"
-                data-route="call">
-          ✨ 선택한 장소로 AI 일정 만들기
+                data-action="keeper-to-call"
+                ${state.selectedTripItems.size ? "" : "disabled"}>
+          🚐 선택한 항목으로 차량·가이드 찾기
         </button>
       </section>
     `;
 
     app.innerHTML = shell(content, {
       title: "여행키퍼",
-      subtitle: "KEEP YOUR JOURNEY",
+      subtitle: "KEEP & SELECT",
       active: "keeper"
     });
   }
 
   function renderCall() {
-    const savedItems = data.destinations.filter(item => state.saved.has(item.id));
+    const tripItems = [...state.selectedTripItems]
+      .map(getKeepItem)
+      .filter(Boolean);
+
+    const guide = getGuide(state.selectedGuide);
 
     const content = `
       <section class="section">
@@ -854,8 +1094,8 @@
           <div class="ai-orb">🚐</div>
           <div>
             <small>SMART VEHICLE MATCHING</small>
-            <h2>여행 인원과 짐을 알려주세요</h2>
-            <p>목적지와 여행 조건을 바탕으로 맞는 차량을 추천합니다.</p>
+            <h2>여행 인원과 이동 조건을 알려주세요</h2>
+            <p>선택한 KEEP 목록과 가이드 여부를 반영해 맞는 차량을 추천합니다.</p>
           </div>
         </div>
       </section>
@@ -884,52 +1124,107 @@
 
         <div class="form-group">
           <label>운행 방식</label>
+
           <div class="check-grid">
             <div class="check-card">
               <input type="radio"
                      id="withDriver"
                      name="driveType"
                      value="driver"
-                     checked>
+                     ${state.driveType === "driver" ? "checked" : ""}>
+
               <label for="withDriver">🧑‍✈️ 기사 포함</label>
             </div>
 
             <div class="check-card">
               <input type="radio"
-                     id="selfDrive"
+                     id="withGuide"
                      name="driveType"
-                     value="self">
-              <label for="selfDrive">🪪 직접 운전</label>
+                     value="guide"
+                     ${state.driveType === "guide" ? "checked" : ""}>
+
+              <label for="withGuide">🧑‍🏫 가이드 포함</label>
             </div>
           </div>
         </div>
 
-        <div class="form-group">
-          <label>목적지 선택</label>
+        <div class="form-group guide-match-area
+                    ${state.driveType === "guide" ? "show" : ""}"
+             id="guideMatchArea">
 
-          ${savedItems.map((item, index) => `
-            <div class="check-card" style="margin-bottom:7px">
-              <input type="checkbox"
-                     id="destination-${index}"
-                     name="destination"
-                     value="${escapeHtml(item.id)}"
-                     ${index < 2 ? "checked" : ""}>
-              <label for="destination-${index}">
-                <span>📍</span>
-                <span>
-                  <strong style="display:block;font-size:11px">
-                    ${escapeHtml(item.title)}
-                  </strong>
-                  <small style="color:var(--muted)">
-                    체류 ${escapeHtml(item.stay)}
-                  </small>
-                </span>
-              </label>
+          <div class="guide-match-title">
+            <div>
+              <strong>여행지 주변 가이드 매칭</strong>
+              <small>결제 전에는 닉네임만 표시됩니다.</small>
             </div>
-          `).join("")}
+
+            <button type="button"
+                    class="secondary-inline-button"
+                    data-route="guide-match">
+              ${guide ? "가이드 변경" : "가이드 찾기"}
+            </button>
+          </div>
+
+          ${guide ? `
+            <article class="matched-guide-card">
+              <img src="${escapeHtml(guide.image)}"
+                   alt="${escapeHtml(guide.nickname)}">
+
+              <div>
+                <span class="tag">매칭 완료</span>
+                <strong>${escapeHtml(guide.nickname)}</strong>
+                <small>
+                  ${escapeHtml(guide.region)}
+                  · 경력 ${guide.careerYears}년
+                  · ${guide.tourCount}회
+                  · ★ ${guide.rating}
+                </small>
+              </div>
+
+              <span class="match-check">✓</span>
+            </article>
+          ` : `
+            <div class="guide-empty-card">
+              <span>🧭</span>
+              <p>아직 선택한 가이드가 없습니다.</p>
+            </div>
+          `}
         </div>
 
-        <button class="primary-button" type="submit">
+        <div class="form-group">
+          <div class="call-selected-head">
+            <label>이번 여행에 포함한 KEEP 목록</label>
+            <button type="button"
+                    data-route="keeper">
+              다시 선택
+            </button>
+          </div>
+
+          ${tripItems.length ? tripItems.map(item => `
+            <article class="call-trip-item">
+              <span>${item.icon}</span>
+
+              <div>
+                <strong>${escapeHtml(item.title)}</strong>
+                <small>
+                  ${escapeHtml(item.typeLabel)}
+                  · ${escapeHtml(item.meta)}
+                </small>
+              </div>
+
+              <span class="call-item-check">✓</span>
+            </article>
+          `).join("") : `
+            <div class="guide-empty-card">
+              <span>🧳</span>
+              <p>여행키퍼에서 이번 여행 항목을 선택해주세요.</p>
+            </div>
+          `}
+        </div>
+
+        <button class="primary-button"
+                type="submit"
+                ${tripItems.length ? "" : "disabled"}>
           🤖 AI 추천 차량 보기
         </button>
       </form>
@@ -940,6 +1235,131 @@
       subtitle: "CALL & TOUR",
       back: true,
       active: "call"
+    });
+  }
+
+  function renderGuideMatch() {
+    const tripDestinations = [...state.selectedTripItems]
+      .map(getKeepItem)
+      .filter(item => item && item.type === "destination");
+
+    const guideCards = data.guides.map((guide, index) => `
+      <article class="guide-card
+                      ${state.selectedGuide === guide.id ? "selected" : ""}">
+        <button class="guide-card-summary"
+                type="button"
+                data-action="toggle-guide-detail"
+                data-id="${escapeHtml(guide.id)}">
+
+          <img src="${escapeHtml(guide.image)}"
+               alt="${escapeHtml(guide.nickname)}">
+
+          <div class="guide-summary-main">
+            <span class="guide-distance">
+              ${index < 2 ? "가까운 순" : "추천"}
+              · ${escapeHtml(guide.nearby)}
+            </span>
+
+            <strong>${escapeHtml(guide.nickname)}</strong>
+
+            <small>
+              ${escapeHtml(guide.region)}
+              · 경력 ${guide.careerYears}년
+              · 활동 ${guide.tourCount}회
+            </small>
+
+            <div class="guide-rating-row">
+              <span>★ ${guide.rating}</span>
+              <span>
+                ${guide.educationCompleted ? "교육 이수" : "교육 확인 중"}
+              </span>
+            </div>
+          </div>
+
+          <span class="guide-expand-icon">⌄</span>
+        </button>
+
+        <div class="guide-card-detail"
+             id="guide-detail-${escapeHtml(guide.id)}">
+          <section>
+            <strong>본인 소개</strong>
+            <p>${escapeHtml(guide.intro)}</p>
+          </section>
+
+          <section>
+            <strong>교육 이수 여부</strong>
+            <p>
+              ${guide.educationCompleted
+                ? "관광안전·응급대응·지역해설 교육 이수"
+                : "일부 교육과정 확인 중"}
+            </p>
+          </section>
+
+          <section>
+            <strong>상세 후기</strong>
+            <ul>
+              ${guide.reviews.map(review => `
+                <li>${escapeHtml(review)}</li>
+              `).join("")}
+            </ul>
+          </section>
+
+          <button class="primary-button"
+                  type="button"
+                  data-action="select-guide"
+                  data-id="${escapeHtml(guide.id)}">
+            ${state.selectedGuide === guide.id
+              ? "✓ 현재 선택된 가이드"
+              : "이 가이드 선택"}
+          </button>
+        </div>
+      </article>
+    `).join("");
+
+    const content = `
+      <section class="section">
+        <div class="ai-banner">
+          <div class="ai-orb">🧑‍🏫</div>
+
+          <div>
+            <small>LOCAL GUIDE MATCHING</small>
+            <h2>선택한 여행지와 가까운 가이드</h2>
+            <p>
+              결제 완료 전에는 닉네임으로 표시하고,
+              완료 후 실명과 안심번호를 제공합니다.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="guide-route-summary">
+        <strong>현재 여행 기준</strong>
+        <p>
+          ${tripDestinations.length
+            ? tripDestinations.map(item => item.title).join(" → ")
+            : "여행키퍼에서 선택한 전체 일정"}
+        </p>
+      </section>
+
+      <section class="section">
+        <div class="guide-filter-row">
+          <button class="active" type="button">가까운 순</button>
+          <button type="button">평점 높은 순</button>
+          <button type="button">경력 많은 순</button>
+          <button type="button">활동 많은 순</button>
+        </div>
+
+        <div class="guide-list">
+          ${guideCards}
+        </div>
+      </section>
+    `;
+
+    app.innerHTML = shell(content, {
+      title: "가이드 매칭",
+      subtitle: "GUIDE MATCH",
+      back: true,
+      active: ""
     });
   }
 
@@ -1071,7 +1491,15 @@
 
   function renderSummary() {
     const vehicle = findVehicle(state.selectedVehicle);
-    const destinations = data.destinations.filter(item => state.saved.has(item.id)).slice(0, 2);
+    const selectedItems = [...state.selectedTripItems]
+      .map(getKeepItem)
+      .filter(Boolean);
+
+    const destinations = selectedItems
+      .filter(item => item.type === "destination")
+      .slice(0, 2);
+
+    const guide = getGuide(state.selectedGuide);
 
     const content = `
       <section class="section">
@@ -1152,6 +1580,14 @@
           <li><span>캐리어</span><strong>2개</strong></li>
           <li><span>운행 방식</span><strong>기사 포함</strong></li>
           <li><span>선택 차량</span><strong>${escapeHtml(vehicle.name)}</strong></li>
+          <li>
+            <span>가이드</span>
+            <strong>
+              ${guide
+                ? `${escapeHtml(guide.nickname)} · 결제 후 실명 공개`
+                : "미포함"}
+            </strong>
+          </li>
           <li><span>출차 예정</span><strong>오전 8시 30분</strong></li>
         </ul>
       </section>
@@ -1650,15 +2086,73 @@
       return;
     }
 
-    if (action === "save") {
-      state.saved.has(id) ? state.saved.delete(id) : state.saved.add(id);
+    if (action === "toggle-keep") {
+      const type = actionTarget.dataset.type;
+      toggleKeep(type, id);
       renderCurrentRoute();
       return;
     }
 
-    if (action === "remove-save") {
-      state.saved.delete(id);
+    if (action === "toggle-trip-item") {
+      const type = actionTarget.dataset.type;
+      const key = keepKey(type, id);
+
+      if (actionTarget.checked) {
+        state.selectedTripItems.add(key);
+      } else {
+        state.selectedTripItems.delete(key);
+      }
+
+      persistState();
       renderCurrentRoute();
+      return;
+    }
+
+    if (action === "keeper-to-call") {
+      if (!state.selectedTripItems.size) {
+        alert("이번 여행에 포함할 항목을 하나 이상 선택해주세요.");
+        return;
+      }
+
+      go("call");
+      return;
+    }
+
+    if (action === "toggle-guide-detail") {
+      const detail = document.getElementById(`guide-detail-${id}`);
+      const card = actionTarget.closest(".guide-card");
+
+      if (detail && card) {
+        detail.classList.toggle("open");
+        card.classList.toggle("open");
+      }
+
+      return;
+    }
+
+    if (action === "select-guide") {
+      const guide = getGuide(id);
+
+      if (!guide) {
+        return;
+      }
+
+      const confirmed = confirm(
+        `${guide.nickname} 가이드를 이번 여행에 매칭할까요?`
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      state.selectedGuide = guide.id;
+      state.driveType = "guide";
+      state.keptItems.add(keepKey("guide", guide.id));
+      state.selectedTripItems.add(keepKey("guide", guide.id));
+      persistState();
+
+      alert(`${guide.nickname} 가이드가 매칭되었습니다.`);
+      go("call");
       return;
     }
 
@@ -1682,10 +2176,43 @@
     }
   });
 
+  document.addEventListener("change", event => {
+    if (event.target.name !== "driveType") {
+      return;
+    }
+
+    state.driveType = event.target.value;
+
+    if (state.driveType !== "guide") {
+      state.selectedGuide = "";
+      state.selectedTripItems.forEach(key => {
+        if (key.startsWith("guide:")) {
+          state.selectedTripItems.delete(key);
+        }
+      });
+    }
+
+    persistState();
+    renderCurrentRoute();
+  });
+
   document.addEventListener("submit", event => {
     event.preventDefault();
 
     if (event.target.id === "callForm") {
+      if (!state.selectedTripItems.size) {
+        alert("이번 여행에 포함할 KEEP 항목을 선택해주세요.");
+        go("keeper");
+        return;
+      }
+
+      if (state.driveType === "guide" && !state.selectedGuide) {
+        alert("가이드 포함을 선택했습니다. 먼저 가이드를 매칭해주세요.");
+        go("guide-match");
+        return;
+      }
+
+      persistState();
       go("vehicles");
       return;
     }
