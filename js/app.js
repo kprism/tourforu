@@ -67,6 +67,8 @@
     hotel: renderHotelDetail,
     food: renderFoodDetail,
     "guide-match": renderGuideMatch,
+    "guide-jobs": renderGuideJobs,
+    training: renderTraining,
     keeper: renderKeeper,
     call: renderCall,
     vehicles: renderVehicles,
@@ -259,7 +261,7 @@
                     aria-label="검색">🔎</button>
             <button class="icon-button"
                     type="button"
-                    data-route="mypage"
+                    data-action="open-mypage"
                     aria-label="마이페이지">👤</button>
           </div>
         </header>
@@ -275,34 +277,52 @@
 
   function bottomNav(active) {
     return `
-      <nav class="bottom-nav" aria-label="주요 메뉴">
-        <button class="nav-button ${active === "home" ? "active" : ""}"
-                type="button"
-                data-route="home">
-          <span class="nav-icon">🏠</span>
-          <span>홈</span>
-        </button>
+      <nav class="bottom-nav bottom-nav-scroll"
+           aria-label="주요 메뉴">
 
-        <button class="nav-button"
-                type="button"
-                data-action="top">
-          <span class="nav-icon">⬆️</span>
-          <span>상단</span>
-        </button>
+        <div class="bottom-nav-track">
+          <button class="nav-button ${active === "home" ? "active" : ""}"
+                  type="button"
+                  data-route="home">
+            <span class="nav-icon nav-icon-3d">🏠</span>
+            <span>홈</span>
+          </button>
 
-        <button class="nav-button ${active === "keeper" ? "active" : ""}"
-                type="button"
-                data-route="keeper">
-          <span class="nav-icon">🧳</span>
-          <span>여행키퍼</span>
-        </button>
+          <button class="nav-button"
+                  type="button"
+                  data-action="top">
+            <span class="nav-icon nav-icon-3d">⬆️</span>
+            <span>상단</span>
+          </button>
 
-        <button class="nav-button call ${active === "call" ? "active" : ""}"
-                type="button"
-                data-route="call">
-          <span class="nav-icon">🚐</span>
-          <span>콜</span>
-        </button>
+          <button class="nav-button ${active === "keeper" ? "active" : ""}"
+                  type="button"
+                  data-route="keeper">
+            <span class="nav-icon nav-icon-3d">🧳</span>
+            <span>여행키퍼</span>
+          </button>
+
+          <button class="nav-button ${active === "guide-jobs" ? "active" : ""}"
+                  type="button"
+                  data-route="guide-jobs">
+            <span class="nav-icon nav-icon-3d">🧑‍🏫</span>
+            <span>가이드일자리</span>
+          </button>
+
+          <button class="nav-button ${active === "training" ? "active" : ""}"
+                  type="button"
+                  data-route="training">
+            <span class="nav-icon nav-icon-3d">🎓</span>
+            <span>여행업교육</span>
+          </button>
+
+          <button class="nav-button call ${active === "call" ? "active" : ""}"
+                  type="button"
+                  data-route="call">
+            <span class="nav-icon nav-icon-3d">🚐</span>
+            <span>콜</span>
+          </button>
+        </div>
       </nav>
     `;
   }
@@ -1238,6 +1258,245 @@
     });
   }
 
+  function getGuideJobApplications() {
+    try {
+      return new Set(
+        JSON.parse(
+          localStorage.getItem("tourforu-guide-job-applications") || "[]"
+        )
+      );
+    } catch (error) {
+      console.warn("가이드 지원 내역을 불러오지 못했습니다.", error);
+      return new Set();
+    }
+  }
+
+  function saveGuideJobApplications(applications) {
+    localStorage.setItem(
+      "tourforu-guide-job-applications",
+      JSON.stringify([...applications])
+    );
+  }
+
+  function renderGuideJobs(params) {
+    const region = params.get("region") || "all";
+    const applications = getGuideJobApplications();
+
+    const jobs = data.guideJobs.filter(job => {
+      if (region === "my") {
+        return job.areaType === "my";
+      }
+
+      if (region === "other") {
+        return job.areaType === "other";
+      }
+
+      return true;
+    });
+
+    const content = `
+      <section class="section">
+        <div class="ai-banner">
+          <div class="ai-orb">🧑‍🏫</div>
+          <div>
+            <small>GUIDE JOB MATCHING</small>
+            <h2>예약된 여행과 가이드를 연결해요</h2>
+            <p>
+              가이드 포함으로 예약된 향후 여행 중
+              지역과 일정이 맞는 여행에 지원할 수 있습니다.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="guide-job-summary-grid">
+        <article>
+          <span>🗓️</span>
+          <small>모집 여행</small>
+          <strong>${data.guideJobs.length}건</strong>
+        </article>
+
+        <article>
+          <span>📍</span>
+          <small>내 지역</small>
+          <strong>
+            ${data.guideJobs.filter(job => job.areaType === "my").length}건
+          </strong>
+        </article>
+
+        <article>
+          <span>✋</span>
+          <small>지원 완료</small>
+          <strong>${applications.size}건</strong>
+        </article>
+      </section>
+
+      <section class="section">
+        <div class="guide-filter-row">
+          <button type="button"
+                  class="${region === "all" ? "active" : ""}"
+                  data-action="guide-job-filter"
+                  data-region="all">
+            전체
+          </button>
+
+          <button type="button"
+                  class="${region === "my" ? "active" : ""}"
+                  data-action="guide-job-filter"
+                  data-region="my">
+            내 지역
+          </button>
+
+          <button type="button"
+                  class="${region === "other" ? "active" : ""}"
+                  data-action="guide-job-filter"
+                  data-region="other">
+            다른 지역
+          </button>
+        </div>
+
+        <div class="section-title">
+          <div>
+            <h2>가이드 포함 예약</h2>
+            <p>카드를 누르면 여행 일정과 지원 조건이 펼쳐집니다.</p>
+          </div>
+        </div>
+
+        ${jobs.map(job => {
+          const applied = applications.has(job.id);
+
+          return `
+            <article class="guide-job-card ${applied ? "applied" : ""}">
+              <button class="guide-job-summary"
+                      type="button"
+                      data-action="toggle-guide-job"
+                      data-id="${escapeHtml(job.id)}">
+
+                <div class="guide-job-date">
+                  <strong>
+                    ${escapeHtml(job.date.slice(5).replace("-", "."))}
+                  </strong>
+                  <small>${escapeHtml(job.startTime)}</small>
+                </div>
+
+                <div class="guide-job-main">
+                  <div class="guide-job-labels">
+                    <span>${escapeHtml(job.status)}</span>
+                    <span>📍 ${escapeHtml(job.region)}</span>
+                  </div>
+
+                  <h3>${escapeHtml(job.title)}</h3>
+
+                  <p>
+                    ${escapeHtml(job.guests)}
+                    · ${escapeHtml(job.startTime)}
+                    ~ ${escapeHtml(job.endTime)}
+                  </p>
+
+                  <strong>
+                    예상 수익 ${escapeHtml(job.expectedPay)}
+                  </strong>
+                </div>
+
+                <span class="guide-expand-icon">⌄</span>
+              </button>
+
+              <div class="guide-job-detail"
+                   id="guide-job-${escapeHtml(job.id)}">
+
+                <div class="guide-job-info-grid">
+                  <article>
+                    <small>만남 장소</small>
+                    <strong>${escapeHtml(job.meeting)}</strong>
+                  </article>
+
+                  <article>
+                    <small>필요 가이드</small>
+                    <strong>${job.guideNeeded}명</strong>
+                  </article>
+
+                  <article>
+                    <small>언어</small>
+                    <strong>
+                      ${job.languages.map(escapeHtml).join(", ")}
+                    </strong>
+                  </article>
+
+                  <article>
+                    <small>예상 수익</small>
+                    <strong>${escapeHtml(job.expectedPay)}</strong>
+                  </article>
+                </div>
+
+                <section class="guide-job-course">
+                  <strong>예정 여행코스</strong>
+
+                  <ol>
+                    ${job.destinations.map(place => `
+                      <li>${escapeHtml(place)}</li>
+                    `).join("")}
+                  </ol>
+                </section>
+
+                <p class="guide-job-description">
+                  ${escapeHtml(job.description)}
+                </p>
+
+                <button class="primary-button"
+                        type="button"
+                        data-action="apply-guide-job"
+                        data-id="${escapeHtml(job.id)}">
+                  ${applied
+                    ? "✓ 지원 완료 · 지원 취소"
+                    : "✋ 이 여행에 가이드 지원"}
+                </button>
+              </div>
+            </article>
+          `;
+        }).join("")}
+      </section>
+    `;
+
+    app.innerHTML = shell(content, {
+      title: "가이드 일자리",
+      subtitle: "GUIDE JOB MATCHING",
+      back: true,
+      active: "guide-jobs"
+    });
+  }
+
+  function renderTraining() {
+    const content = `
+      <section class="section">
+        <div class="ai-banner">
+          <div class="ai-orb">🎓</div>
+          <div>
+            <small>TOUR BUSINESS EDUCATION</small>
+            <h2>여행업교육 페이지 준비 중</h2>
+            <p>
+              다음 단계에서 가이드·여객사업자 구분,
+              접수상태와 교육일정을 연결합니다.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div class="empty-state">
+        <div class="ai-orb">📚</div>
+        <h2>교육 데이터는 준비됐어요</h2>
+        <p>다음 패치에서 교육목록과 신청 기능을 표시합니다.</p>
+      </div>
+    `;
+
+    app.innerHTML = shell(content, {
+      title: "여행업교육",
+      subtitle: "TOUR EDUCATION",
+      back: true,
+      active: "training"
+    });
+  }
+
+
   function renderGuideMatch() {
     const tripDestinations = [...state.selectedTripItems]
       .map(getKeepItem)
@@ -1787,7 +2046,7 @@
         <article class="dashboard-card">
           <span>🧳</span>
           <small>여행키퍼</small>
-          <strong>${state.saved.size}</strong>
+          <strong>${state.keptItems.size}</strong>
         </article>
         <article class="dashboard-card">
           <span>🎯</span>
@@ -2153,6 +2412,57 @@
 
       alert(`${guide.nickname} 가이드가 매칭되었습니다.`);
       go("call");
+      return;
+    }
+
+    if (action === "open-mypage") {
+      go("mypage");
+      return;
+    }
+
+    if (action === "guide-job-filter") {
+      go("guide-jobs", {
+        region: actionTarget.dataset.region || "all"
+      });
+      return;
+    }
+
+    if (action === "toggle-guide-job") {
+      const detail = document.getElementById(`guide-job-${id}`);
+      const card = actionTarget.closest(".guide-job-card");
+
+      if (detail && card) {
+        detail.classList.toggle("open");
+        card.classList.toggle("open");
+      }
+
+      return;
+    }
+
+    if (action === "apply-guide-job") {
+      const applications = getGuideJobApplications();
+      const applied = applications.has(id);
+
+      const confirmed = confirm(
+        applied
+          ? "이 여행에 대한 가이드 지원을 취소할까요?"
+          : "이 여행 일정에 가이드로 지원할까요?"
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      if (applied) {
+        applications.delete(id);
+        alert("가이드 지원을 취소했습니다.");
+      } else {
+        applications.add(id);
+        alert("가이드 지원이 완료됐습니다.");
+      }
+
+      saveGuideJobApplications(applications);
+      renderCurrentRoute();
       return;
     }
 

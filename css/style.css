@@ -2034,3 +2034,615 @@ img {
     grid-template-columns: 95px 1fr;
   }
 }
+
+/* =========================================================
+   TOURFORU GUIDE JOBS + SIX ITEM FLOATING NAV PROTOTYPE
+   ========================================================= */
+
+.bottom-nav.bottom-nav-scroll {
+  display: block;
+  padding: 5px;
+  overflow: hidden;
+}
+
+.bottom-nav-track {
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  gap: 4px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.bottom-nav-track::-webkit-scrollbar {
+  display: none;
+}
+
+.bottom-nav-track .nav-button {
+  flex: 0 0 76px;
+  min-width: 76px;
+  min-height: 53px;
+  scroll-snap-align: center;
+}
+
+.bottom-nav-track .nav-button.call {
+  flex-basis: 82px;
+  min-width: 82px;
+}
+
+.bottom-nav-track .nav-button > span:last-child {
+  overflow: hidden;
+  max-width: 72px;
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-icon-3d {
+  display: grid;
+  width: 29px;
+  height: 29px;
+  place-items: center;
+  background:
+    radial-gradient(
+      circle at 31% 22%,
+      #ffffff 0 11%,
+      transparent 12%
+    ),
+    linear-gradient(145deg, #f4fff9, #bde9d7);
+  border-radius: 10px;
+  box-shadow:
+    inset 0 -5px 8px rgba(20, 99, 69, 0.14),
+    inset 0 3px 6px rgba(255, 255, 255, 0.82),
+    0 3px 7px rgba(22, 71, 52, 0.12);
+  font-size: 16px !important;
+  line-height: 1;
+}
+
+.nav-button.call .nav-icon-3d {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 -4px 7px rgba(0, 0, 0, 0.11),
+    0 3px 7px rgba(0, 0, 0, 0.09);
+}
+
+.nav-button[data-route="guide-jobs"].active {
+  color: #674400;
+  background: #fff0c7;
+}
+
+.nav-button[data-route="training"].active {
+  color: #294c87;
+  background: #e6efff;
+}
+
+.guide-job-summary-grid {
+  display: grid;
+  margin: 0 10px 9px;
+  gap: 7px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.guide-job-summary-grid article {
+  min-height: 88px;
+  padding: 10px 6px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 4px 11px rgba(24, 55, 43, 0.05);
+}
+
+.guide-job-summary-grid span,
+.guide-job-summary-grid small,
+.guide-job-summary-grid strong {
+  display: block;
+}
+
+.guide-job-summary-grid span {
+  font-size: 24px;
+}
+
+.guide-job-summary-grid small {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.guide-job-summary-grid strong {
+  margin-top: 3px;
+  font-size: 14px;
+}
+
+.guide-job-card {
+  margin-bottom: 8px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  box-shadow: 0 5px 14px rgba(24, 55, 43, 0.07);
+}
+
+.guide-job-card.applied {
+  border-color: #66b793;
+  box-shadow:
+    0 0 0 2px rgba(55, 159, 116, 0.1),
+    0 5px 14px rgba(24, 55, 43, 0.07);
+}
+
+.guide-job-summary {
+  display: grid;
+  width: 100%;
+  padding: 10px;
+  grid-template-columns: 56px 1fr 20px;
+  align-items: center;
+  gap: 9px;
+  text-align: left;
+  background: #ffffff;
+  border: 0;
+}
+
+.guide-job-date {
+  display: grid;
+  width: 56px;
+  height: 62px;
+  place-items: center;
+  align-content: center;
+  color: var(--green-dark);
+  background:
+    radial-gradient(
+      circle at 31% 22%,
+      #ffffff 0 10%,
+      transparent 11%
+    ),
+    linear-gradient(145deg, #effff9, #bce9d7);
+  border-radius: 16px;
+  box-shadow:
+    inset 0 -7px 10px rgba(20, 103, 71, 0.13),
+    0 5px 10px rgba(22, 71, 52, 0.11);
+}
+
+.guide-job-date strong,
+.guide-job-date small {
+  display: block;
+}
+
+.guide-job-date strong {
+  font-size: 12px;
+}
+
+.guide-job-date small {
+  margin-top: 3px;
+  font-size: 8px;
+}
+
+.guide-job-labels {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.guide-job-labels span {
+  padding: 4px 6px;
+  color: var(--green-dark);
+  background: var(--green-soft);
+  border-radius: 7px;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.guide-job-main h3 {
+  margin: 6px 0 3px;
+  font-size: 13px;
+}
+
+.guide-job-main p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.guide-job-main > strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--green);
+  font-size: 10px;
+}
+
+.guide-job-detail {
+  display: none;
+  padding: 0 11px 11px;
+  border-top: 1px solid var(--line);
+}
+
+.guide-job-detail.open {
+  display: block;
+}
+
+.guide-job-card.open .guide-expand-icon {
+  transform: rotate(180deg);
+}
+
+.guide-job-info-grid {
+  display: grid;
+  padding: 10px 0;
+  gap: 6px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.guide-job-info-grid article {
+  padding: 9px;
+  background: var(--soft);
+  border-radius: 11px;
+}
+
+.guide-job-info-grid small,
+.guide-job-info-grid strong {
+  display: block;
+}
+
+.guide-job-info-grid small {
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.guide-job-info-grid strong {
+  margin-top: 3px;
+  font-size: 10px;
+}
+
+.guide-job-course {
+  padding: 10px;
+  background: #eef8f4;
+  border: 1px solid #cee6dc;
+  border-radius: 12px;
+}
+
+.guide-job-course > strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 10px;
+}
+
+.guide-job-course ol {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.guide-job-course li {
+  padding: 2px 0;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.guide-job-description {
+  margin: 9px 0;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+@media (max-width: 360px) {
+  .bottom-nav-track .nav-button {
+    flex-basis: 71px;
+    min-width: 71px;
+  }
+
+  .guide-job-summary {
+    grid-template-columns: 51px 1fr 18px;
+  }
+
+  .guide-job-date {
+    width: 51px;
+    height: 58px;
+  }
+}
+
+
+/* =========================================================
+   TOURFORU GUIDE JOBS + SIX ITEM FLOATING NAV PROTOTYPE
+   ========================================================= */
+
+.bottom-nav.bottom-nav-scroll {
+  display: block;
+  padding: 5px;
+  overflow: hidden;
+}
+
+.bottom-nav-track {
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  gap: 4px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.bottom-nav-track::-webkit-scrollbar {
+  display: none;
+}
+
+.bottom-nav-track .nav-button {
+  flex: 0 0 76px;
+  min-width: 76px;
+  min-height: 53px;
+  scroll-snap-align: center;
+}
+
+.bottom-nav-track .nav-button.call {
+  flex-basis: 82px;
+  min-width: 82px;
+}
+
+.bottom-nav-track .nav-button > span:last-child {
+  overflow: hidden;
+  max-width: 72px;
+  font-size: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-icon-3d {
+  display: grid;
+  width: 29px;
+  height: 29px;
+  place-items: center;
+  background:
+    radial-gradient(
+      circle at 31% 22%,
+      #ffffff 0 11%,
+      transparent 12%
+    ),
+    linear-gradient(145deg, #f4fff9, #bde9d7);
+  border-radius: 10px;
+  box-shadow:
+    inset 0 -5px 8px rgba(20, 99, 69, 0.14),
+    inset 0 3px 6px rgba(255, 255, 255, 0.82),
+    0 3px 7px rgba(22, 71, 52, 0.12);
+  font-size: 16px !important;
+  line-height: 1;
+}
+
+.nav-button.call .nav-icon-3d {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 -4px 7px rgba(0, 0, 0, 0.11),
+    0 3px 7px rgba(0, 0, 0, 0.09);
+}
+
+.nav-button[data-route="guide-jobs"].active {
+  color: #674400;
+  background: #fff0c7;
+}
+
+.nav-button[data-route="training"].active {
+  color: #294c87;
+  background: #e6efff;
+}
+
+.guide-job-summary-grid {
+  display: grid;
+  margin: 0 10px 9px;
+  gap: 7px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.guide-job-summary-grid article {
+  min-height: 88px;
+  padding: 10px 6px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 4px 11px rgba(24, 55, 43, 0.05);
+}
+
+.guide-job-summary-grid span,
+.guide-job-summary-grid small,
+.guide-job-summary-grid strong {
+  display: block;
+}
+
+.guide-job-summary-grid span {
+  font-size: 24px;
+}
+
+.guide-job-summary-grid small {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.guide-job-summary-grid strong {
+  margin-top: 3px;
+  font-size: 14px;
+}
+
+.guide-job-card {
+  margin-bottom: 8px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  box-shadow: 0 5px 14px rgba(24, 55, 43, 0.07);
+}
+
+.guide-job-card.applied {
+  border-color: #66b793;
+  box-shadow:
+    0 0 0 2px rgba(55, 159, 116, 0.1),
+    0 5px 14px rgba(24, 55, 43, 0.07);
+}
+
+.guide-job-summary {
+  display: grid;
+  width: 100%;
+  padding: 10px;
+  grid-template-columns: 56px 1fr 20px;
+  align-items: center;
+  gap: 9px;
+  text-align: left;
+  background: #ffffff;
+  border: 0;
+}
+
+.guide-job-date {
+  display: grid;
+  width: 56px;
+  height: 62px;
+  place-items: center;
+  align-content: center;
+  color: var(--green-dark);
+  background:
+    radial-gradient(
+      circle at 31% 22%,
+      #ffffff 0 10%,
+      transparent 11%
+    ),
+    linear-gradient(145deg, #effff9, #bce9d7);
+  border-radius: 16px;
+  box-shadow:
+    inset 0 -7px 10px rgba(20, 103, 71, 0.13),
+    0 5px 10px rgba(22, 71, 52, 0.11);
+}
+
+.guide-job-date strong,
+.guide-job-date small {
+  display: block;
+}
+
+.guide-job-date strong {
+  font-size: 12px;
+}
+
+.guide-job-date small {
+  margin-top: 3px;
+  font-size: 8px;
+}
+
+.guide-job-labels {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.guide-job-labels span {
+  padding: 4px 6px;
+  color: var(--green-dark);
+  background: var(--green-soft);
+  border-radius: 7px;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.guide-job-main h3 {
+  margin: 6px 0 3px;
+  font-size: 13px;
+}
+
+.guide-job-main p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.guide-job-main > strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--green);
+  font-size: 10px;
+}
+
+.guide-job-detail {
+  display: none;
+  padding: 0 11px 11px;
+  border-top: 1px solid var(--line);
+}
+
+.guide-job-detail.open {
+  display: block;
+}
+
+.guide-job-card.open .guide-expand-icon {
+  transform: rotate(180deg);
+}
+
+.guide-job-info-grid {
+  display: grid;
+  padding: 10px 0;
+  gap: 6px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.guide-job-info-grid article {
+  padding: 9px;
+  background: var(--soft);
+  border-radius: 11px;
+}
+
+.guide-job-info-grid small,
+.guide-job-info-grid strong {
+  display: block;
+}
+
+.guide-job-info-grid small {
+  color: var(--muted);
+  font-size: 8px;
+}
+
+.guide-job-info-grid strong {
+  margin-top: 3px;
+  font-size: 10px;
+}
+
+.guide-job-course {
+  padding: 10px;
+  background: #eef8f4;
+  border: 1px solid #cee6dc;
+  border-radius: 12px;
+}
+
+.guide-job-course > strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 10px;
+}
+
+.guide-job-course ol {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.guide-job-course li {
+  padding: 2px 0;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.guide-job-description {
+  margin: 9px 0;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+@media (max-width: 360px) {
+  .bottom-nav-track .nav-button {
+    flex-basis: 71px;
+    min-width: 71px;
+  }
+
+  .guide-job-summary {
+    grid-template-columns: 51px 1fr 18px;
+  }
+
+  .guide-job-date {
+    width: 51px;
+    height: 58px;
+  }
+}
+
