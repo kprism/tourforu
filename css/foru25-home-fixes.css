@@ -1,0 +1,369 @@
+/* forU25 home navigation, category and search prototype */
+
+.foru-category-page {
+  min-height: 100vh;
+}
+
+.foru-category-hero {
+  display: flex;
+  margin: 10px;
+  padding: 16px;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff;
+  background:
+    linear-gradient(135deg, #153e31, #34765f);
+  border-radius: 20px;
+  box-shadow: 0 10px 24px rgba(17, 62, 47, 0.18);
+}
+
+.foru-category-hero > span {
+  display: grid;
+  width: 60px;
+  height: 60px;
+  flex: 0 0 60px;
+  place-items: center;
+  font-size: 31px;
+  background:
+    radial-gradient(
+      circle at 30% 24%,
+      #ffffff 0 9%,
+      transparent 10%
+    ),
+    linear-gradient(145deg, #eafff6, #8cdbbd);
+  border-radius: 18px;
+  box-shadow:
+    inset 0 -8px 13px rgba(20, 91, 65, 0.18),
+    0 6px 13px rgba(0, 0, 0, 0.12);
+}
+
+.foru-category-hero small {
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.foru-category-hero h1 {
+  margin: 4px 0;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.foru-category-hero p {
+  margin: 0;
+  opacity: 0.86;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.foru-category-list {
+  display: grid;
+  gap: 10px;
+}
+
+.foru-category-card {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #dce5e1;
+  border-radius: 18px;
+  box-shadow: 0 7px 18px rgba(30, 69, 54, 0.08);
+  cursor: pointer;
+}
+
+.foru-category-image {
+  height: 190px;
+  overflow: hidden;
+  background: #e4ece8;
+}
+
+.foru-category-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.foru-category-body {
+  padding: 13px;
+}
+
+.foru-category-badges {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.foru-category-badges span {
+  padding: 5px 8px;
+  color: #225c47;
+  background: #e9f6f0;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.foru-category-body h2 {
+  margin: 10px 0 5px;
+  font-size: 17px;
+}
+
+.foru-category-body p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  color: #5d6c66;
+  font-size: 11px;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.foru-category-meta {
+  display: flex;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.foru-category-meta span {
+  padding: 5px 7px;
+  color: #55635e;
+  background: #f3f6f5;
+  border-radius: 8px;
+  font-size: 9px;
+}
+
+.foru-category-price {
+  display: flex;
+  margin-top: 11px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.foru-category-price strong {
+  color: #1f684d;
+  font-size: 14px;
+}
+
+.foru-category-price span {
+  color: #1f684d;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.foru-search-layer {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 18px 10px;
+  background: rgba(12, 28, 22, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.foru-search-panel {
+  width: min(100%, 520px);
+  max-height: calc(100vh - 36px);
+  overflow-y: auto;
+  padding: 13px;
+  background: #f7faf8;
+  border-radius: 24px;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.3);
+}
+
+.foru-search-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.foru-search-head > button {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  background: #ffffff;
+  border: 0;
+  border-radius: 14px;
+  box-shadow: 0 5px 12px rgba(30, 69, 54, 0.09);
+  font-size: 19px;
+}
+
+.foru-search-head small,
+.foru-search-head strong {
+  display: block;
+}
+
+.foru-search-head small {
+  color: #35745c;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+}
+
+.foru-search-head strong {
+  margin-top: 2px;
+  font-size: 18px;
+}
+
+.foru-search-form {
+  display: grid;
+  margin-top: 13px;
+  padding: 5px;
+  grid-template-columns: 35px 1fr auto;
+  align-items: center;
+  background: #ffffff;
+  border: 2px solid #4c9276;
+  border-radius: 16px;
+}
+
+.foru-search-form > span {
+  text-align: center;
+}
+
+.foru-search-form input {
+  min-width: 0;
+  padding: 10px 3px;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font-size: 14px;
+}
+
+.foru-search-form button {
+  padding: 10px 14px;
+  color: #ffffff;
+  background: #245f49;
+  border: 0;
+  border-radius: 11px;
+  font-weight: 900;
+}
+
+.foru-search-chips {
+  display: flex;
+  margin-top: 9px;
+  overflow-x: auto;
+  gap: 6px;
+  scrollbar-width: none;
+}
+
+.foru-search-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.foru-search-chips button {
+  flex: 0 0 auto;
+  padding: 7px 11px;
+  color: #2b624e;
+  background: #e5f3ed;
+  border: 0;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.foru-search-results {
+  display: grid;
+  margin-top: 12px;
+  gap: 8px;
+}
+
+.foru-search-guide {
+  padding: 35px 15px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #dbe7e2;
+  border-radius: 17px;
+}
+
+.foru-search-guide span,
+.foru-search-guide strong,
+.foru-search-guide p {
+  display: block;
+}
+
+.foru-search-guide span {
+  font-size: 30px;
+}
+
+.foru-search-guide strong {
+  margin-top: 8px;
+}
+
+.foru-search-guide p {
+  margin: 5px 0 0;
+  color: #68766f;
+  font-size: 10px;
+}
+
+.foru-search-result {
+  display: grid;
+  width: 100%;
+  padding: 8px;
+  grid-template-columns: 94px 1fr;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  background: #ffffff;
+  border: 1px solid #dbe5e1;
+  border-radius: 16px;
+  box-shadow: 0 5px 13px rgba(30, 69, 54, 0.07);
+}
+
+.foru-search-result img {
+  width: 94px;
+  height: 94px;
+  object-fit: cover;
+  border-radius: 13px;
+}
+
+.foru-search-result small,
+.foru-search-result strong,
+.foru-search-result p,
+.foru-search-result span {
+  display: block;
+}
+
+.foru-search-result small {
+  color: #347159;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+.foru-search-result strong {
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.foru-search-result p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 4px 0;
+  color: #637069;
+  font-size: 9px;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.foru-search-result span {
+  color: #236148;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+@media (max-width: 380px) {
+  .foru-category-image {
+    height: 165px;
+  }
+
+  .foru-search-result {
+    grid-template-columns: 82px 1fr;
+  }
+
+  .foru-search-result img {
+    width: 82px;
+    height: 82px;
+  }
+}
