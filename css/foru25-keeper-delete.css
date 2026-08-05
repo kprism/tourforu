@@ -1,0 +1,45 @@
+/* forU25 KEEP selection deletion */
+.foru-keeper-delete-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 10px 12px;
+  padding: 12px;
+  background: linear-gradient(145deg, #fff8f6, #ffffff);
+  border: 1px solid #f0c9c1;
+  border-radius: 15px;
+  box-shadow: 0 5px 14px rgba(104, 48, 35, 0.07);
+}
+
+.foru-keeper-delete-bar strong,
+.foru-keeper-delete-bar small {
+  display: block;
+}
+
+.foru-keeper-delete-bar strong {
+  font-size: 12px;
+}
+
+.foru-keeper-delete-bar small {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 8px;
+  line-height: 1.45;
+}
+
+.foru-keeper-delete-bar button {
+  flex: 0 0 auto;
+  min-height: 38px;
+  padding: 0 12px;
+  color: #8d2f22;
+  background: #fff0ec;
+  border: 1px solid #efbcb2;
+  border-radius: 11px;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.foru-keeper-delete-bar button:active {
+  transform: translateY(1px);
+}
