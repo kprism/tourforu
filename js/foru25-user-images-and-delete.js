@@ -84,16 +84,18 @@
     writeState(state);
 
     alert("선택한 KEEP 항목을 삭제했습니다.");
-    window.dispatchEvent(new HashChangeEvent("hashchange"));
-    setTimeout(renderKeeperDeleteBar, 30);
+
+    // 앱 내부 메모리 상태까지 새로 읽도록 현재 해시를 유지한 채 새로고침합니다.
+    location.reload();
   }
 
   document.addEventListener("click", event => {
     if (event.target.closest("[data-foru-delete-selected]")) {
       event.preventDefault();
+      event.stopImmediatePropagation();
       deleteSelectedKeeps();
     }
-  });
+  }, true);
 
   const observer = new MutationObserver(() => {
     renderKeeperDeleteBar();
