@@ -1,0 +1,82 @@
+/* forU25 visual corrections */
+
+/* The former placeholder SVGs contained baked-in white labels. Real photos now replace them. */
+.foru-special-media img,
+.hero-card img,
+.feed-media img,
+.gallery-item img {
+  object-fit: cover;
+  object-position: center;
+}
+
+.foru-special-media::after,
+.hero-card::before,
+.feed-media::before {
+  content: none !important;
+}
+
+.foru-special-detail-page .app-main {
+  padding-bottom: 24px;
+}
+
+.foru-special-detail-gallery {
+  margin-top: 0;
+}
+
+.foru-special-detail-gallery .gallery-item {
+  min-width: 86%;
+}
+
+.foru-special-detail-gallery img {
+  width: 100%;
+  height: 260px;
+  border-radius: 0 0 18px 18px;
+}
+
+.foru-special-detail-page .destination-intro {
+  padding-top: 16px;
+}
+
+.foru-special-detail-page .stat-grid {
+  margin-bottom: 8px;
+}
+
+.foru-special-detail-page .itinerary-card,
+.foru-special-detail-page .summary-card {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.foru-special-detail-page .detail-action-grid {
+  display: grid;
+  grid-template-columns: 118px 1fr;
+  gap: 8px;
+}
+
+.foru-special-detail-page .keep-3d-button,
+.foru-special-detail-page .primary-button {
+  min-height: 48px;
+}
+
+.foru-special-card .foru-special-media {
+  background: #dce8e3;
+}
+
+.foru-special-card .foru-special-media img {
+  width: 100%;
+  height: 118px;
+}
+
+.foru-special-card .foru-special-badge {
+  text-shadow: 0 1px 3px rgba(0,0,0,.55);
+}
+
+@media (max-width: 420px) {
+  .foru-special-detail-gallery img {
+    height: 230px;
+  }
+
+  .foru-special-detail-page .detail-action-grid {
+    grid-template-columns: 105px 1fr;
+  }
+}
