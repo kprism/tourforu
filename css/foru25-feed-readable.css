@@ -1,0 +1,147 @@
+/* forU25 feed readability pass - 2026-08-24 */
+
+/* 사진 위 오버레이 글자 전반 확대 */
+.feed-overlay-top .pill,
+.feed-place .pill {
+  min-height: 30px !important;
+  padding: 7px 11px !important;
+  font-size: 12.5px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+.feed-overlay-bottom {
+  right: 14px !important;
+  bottom: 14px !important;
+  left: 14px !important;
+  align-items: flex-end !important;
+}
+
+.feed-place {
+  max-width: 100% !important;
+  color: #fff !important;
+}
+
+.feed-place h3 {
+  margin: 8px 0 4px !important;
+  font-size: 25px !important;
+  font-weight: 900 !important;
+  line-height: 1.16 !important;
+  letter-spacing: -0.055em !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,.38) !important;
+}
+
+.feed-place p {
+  margin: 0 !important;
+  color: rgba(255,255,255,.96) !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  text-shadow: 0 2px 7px rgba(0,0,0,.42) !important;
+}
+
+/* 사진 위 '상세보기'는 제거. 사진 자체 클릭으로 상세 진입 */
+.feed-overlay-bottom > .pill:last-child {
+  display: none !important;
+}
+
+/* 좋아요/공유/KEEP 영역도 여유 있게 */
+.feed-actions {
+  padding: 10px 12px 3px !important;
+}
+
+.feed-action {
+  min-height: 38px !important;
+  padding: 8px 11px !important;
+  font-size: 13px !important;
+}
+
+.feed-actions .keep-3d-button {
+  min-height: 44px !important;
+  padding: 8px 13px !important;
+}
+
+.feed-actions .keep-3d-button span:last-child {
+  font-size: 13px !important;
+}
+
+/* 사진 아래 '통영시 + 부연설명' 확대 */
+.feed-caption {
+  padding: 8px 12px 4px !important;
+  color: #28332f !important;
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+  letter-spacing: -0.025em !important;
+}
+
+.feed-caption strong {
+  margin-right: 7px !important;
+  color: #14201c !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+}
+
+.tags {
+  padding: 7px 12px 2px !important;
+  gap: 6px !important;
+}
+
+.tag {
+  padding: 6px 8px !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+}
+
+/* 상단 대표 카드도 같은 크기 체계 적용 */
+.hero-bottom h2 {
+  font-size: 29px !important;
+  line-height: 1.14 !important;
+}
+
+.hero-bottom p {
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+}
+
+.hero-top .pill,
+.hero-bottom .pill,
+.meta-row .pill {
+  font-size: 12.5px !important;
+  font-weight: 900 !important;
+}
+
+/* 사진 위 텍스트가 더 잘 읽히도록 하단 그라데이션 강화 */
+.feed-media::after {
+  background: linear-gradient(
+    to bottom,
+    rgba(6,17,13,.06) 20%,
+    rgba(6,17,13,.28) 55%,
+    rgba(6,17,13,.82) 100%
+  ) !important;
+}
+
+@media (max-width: 380px) {
+  .feed-place h3 {
+    font-size: 23px !important;
+  }
+
+  .feed-place p {
+    font-size: 12.8px !important;
+  }
+
+  .feed-caption {
+    font-size: 13.2px !important;
+  }
+
+  .feed-caption strong {
+    font-size: 14px !important;
+  }
+
+  .hero-bottom h2 {
+    font-size: 27px !important;
+  }
+
+  .hero-bottom p {
+    font-size: 13.2px !important;
+  }
+}
