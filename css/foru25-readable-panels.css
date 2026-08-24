@@ -1,214 +1,136 @@
 /* forU25 mobile readability refinements 2026-08-24 */
 
-/* 홈 바로가기: 아이콘+텍스트를 하나의 흰색 카드 안에 배치 */
-.story-row {
-  gap: 8px !important;
-  align-items: stretch;
-}
-
-.story {
-  display: flex !important;
-  flex: 0 0 78px !important;
-  min-width: 78px !important;
-  min-height: 86px !important;
-  padding: 8px 5px 7px !important;
-  align-items: center !important;
-  justify-content: center !important;
-  flex-direction: column !important;
-  gap: 5px !important;
-  background: #ffffff !important;
-  border: 1px solid #e1e8e5 !important;
-  border-radius: 18px !important;
-  box-shadow: 0 6px 15px rgba(22, 69, 52, 0.10) !important;
-}
-
-.story .story-icon {
-  display: grid !important;
-  width: 48px !important;
-  height: 48px !important;
-  flex: 0 0 48px !important;
-  place-items: center !important;
-  padding: 0 !important;
-  background: #ffffff !important;
-  border: 0 !important;
-  border-radius: 14px !important;
-  box-shadow: none !important;
-  font-size: 27px !important;
-  line-height: 1 !important;
-}
-
-.story > span:last-child {
-  display: block !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  overflow: hidden !important;
-  color: #17241f !important;
-  font-size: 11px !important;
-  font-weight: 900 !important;
-  line-height: 1.1 !important;
-  letter-spacing: -0.055em !important;
-  text-align: center !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-}
-
-/* 상세페이지 상단 소개 문구 */
-.destination-intro > .tag {
-  font-size: 10px !important;
-  font-weight: 900 !important;
-}
-
-.destination-intro h1 {
-  margin-top: 8px !important;
-  margin-bottom: 7px !important;
-  font-size: 24px !important;
-  line-height: 1.18 !important;
-  letter-spacing: -0.055em !important;
-}
-
-.destination-intro > p {
-  color: #4b5a54 !important;
-  font-size: 13px !important;
-  line-height: 1.58 !important;
-  letter-spacing: -0.025em !important;
-}
-
-/* 거리/시간/가격/평점 */
-.stat {
-  padding: 13px 5px !important;
-}
-
-.stat small {
-  font-size: 10px !important;
-  line-height: 1.2 !important;
-}
-
-.stat strong {
-  margin-top: 5px !important;
+/* 전체 프로토타입: 작은 글씨를 없애고 시원한 정보 밀도로 통일 */
+#app {
   font-size: 15px !important;
-  line-height: 1.2 !important;
 }
 
-/* 핵심정보 카드 */
-.detail-feature strong {
-  font-size: 14px !important;
-  line-height: 1.25 !important;
-}
-
-.detail-feature small {
-  margin-top: 5px !important;
-  color: #5d6964 !important;
-  font-size: 11px !important;
-  line-height: 1.4 !important;
-}
-
-/* AI 평가/여행 핵심정보 같은 요약 목록 */
-.summary-card h2 {
-  font-size: 18px !important;
-  line-height: 1.25 !important;
-}
-
-.summary-list li {
-  padding: 13px 0 !important;
-  align-items: center !important;
-  font-size: 13px !important;
-  line-height: 1.3 !important;
-}
-
-.summary-list li > span {
-  color: #5e6a65 !important;
-  font-size: 12px !important;
-}
-
-.summary-list li > strong {
-  flex: 0 0 auto;
-  color: #16231e !important;
-  font-size: 13px !important;
-  font-weight: 900 !important;
-  white-space: nowrap !important;
-}
-
-/* AI 추천 관광 순서 */
-.itinerary-head h2 {
-  font-size: 18px !important;
-}
-
-.itinerary-head p {
-  font-size: 11px !important;
-}
-
-.itinerary-step strong {
-  display: block !important;
-  overflow: hidden !important;
-  font-size: 14px !important;
-  line-height: 1.25 !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-}
-
-.itinerary-step p {
-  margin-top: 5px !important;
-  color: #53635c !important;
-  font-size: 11.5px !important;
+#app p,
+#app small,
+#app label,
+#app li,
+#app .helper,
+#app .muted,
+#app .meta,
+#app .subtext {
   line-height: 1.5 !important;
 }
 
-.itinerary-time {
-  font-size: 10px !important;
-  font-weight: 900 !important;
+#app small,
+#app .helper,
+#app .muted,
+#app .meta,
+#app .subtext {
+  font-size: 12.5px !important;
 }
 
-/* KEEP 버튼은 콘텐츠 하단에서도 또렷하게 */
-.keep-3d-button {
-  min-height: 44px !important;
-  padding: 8px 11px !important;
-  gap: 6px !important;
+#app h1 { font-size: 25px !important; line-height: 1.18 !important; }
+#app h2 { font-size: 20px !important; line-height: 1.22 !important; }
+#app h3 { font-size: 17px !important; line-height: 1.25 !important; }
+
+#app button,
+#app select,
+#app input {
+  font-size: 14px !important;
 }
 
-.keep-3d-button > span:last-child {
-  font-size: 12px !important;
-  font-weight: 900 !important;
-  letter-spacing: -0.03em !important;
-  white-space: nowrap !important;
+/* 홈 바로가기 */
+.story-row { gap: 8px !important; align-items: stretch; }
+.story {
+  display: flex !important; flex: 0 0 82px !important; min-width: 82px !important;
+  min-height: 90px !important; padding: 8px 5px 7px !important;
+  align-items: center !important; justify-content: center !important;
+  flex-direction: column !important; gap: 5px !important; background: #fff !important;
+  border: 1px solid #e1e8e5 !important; border-radius: 18px !important;
+  box-shadow: 0 6px 15px rgba(22,69,52,.10) !important;
+}
+.story .story-icon {
+  display: grid !important; width: 48px !important; height: 48px !important; flex: 0 0 48px !important;
+  place-items: center !important; padding: 0 !important; background: #fff !important; border: 0 !important;
+  border-radius: 14px !important; box-shadow: none !important; font-size: 27px !important; line-height: 1 !important;
+}
+.story > span:last-child {
+  display: block !important; width: 100% !important; overflow: hidden !important;
+  color: #17241f !important; font-size: 12px !important; font-weight: 900 !important;
+  line-height: 1.1 !important; letter-spacing: -0.055em !important; text-align: center !important;
+  text-overflow: ellipsis !important; white-space: nowrap !important;
 }
 
-.keep-3d-icon {
-  font-size: 16px !important;
-}
+/* 상세 공통 */
+.destination-intro > .tag { font-size: 11.5px !important; font-weight: 900 !important; }
+.destination-intro h1 { margin: 8px 0 7px !important; font-size: 25px !important; line-height: 1.18 !important; letter-spacing: -.05em !important; }
+.destination-intro > p { color:#4b5a54 !important; font-size:14px !important; line-height:1.58 !important; }
+.stat { padding: 14px 5px !important; }
+.stat small { font-size: 11.5px !important; }
+.stat strong { margin-top:5px !important; font-size:16px !important; }
+.detail-feature strong { font-size:15.5px !important; line-height:1.3 !important; }
+.detail-feature small { margin-top:5px !important; color:#5d6964 !important; font-size:13px !important; line-height:1.48 !important; }
+.summary-card h2 { font-size:20px !important; }
+.summary-list li { padding:14px 0 !important; align-items:center !important; font-size:14px !important; }
+.summary-list li > span { color:#5e6a65 !important; font-size:13.5px !important; }
+.summary-list li > strong { flex:0 0 auto; color:#16231e !important; font-size:14px !important; font-weight:900 !important; white-space:nowrap !important; }
 
-/* 카드형 콘텐츠의 제목/설명도 공통 확대 */
+/* AI 일정 */
+.itinerary-head h2 { font-size:20px !important; }
+.itinerary-head p { font-size:13px !important; }
+.itinerary-step strong { display:block !important; overflow:hidden !important; font-size:16px !important; line-height:1.3 !important; text-overflow:ellipsis !important; white-space:nowrap !important; }
+.itinerary-step p { margin-top:5px !important; color:#53635c !important; font-size:13.5px !important; line-height:1.55 !important; }
+.itinerary-time { font-size:12px !important; font-weight:900 !important; }
+
+/* KEEP / 키퍼 */
+.keep-3d-button { min-height:46px !important; padding:9px 12px !important; gap:6px !important; }
+.keep-3d-button > span:last-child { font-size:13px !important; font-weight:900 !important; white-space:nowrap !important; }
+.keep-3d-icon { font-size:17px !important; }
+.keeper-guide-box h2,
+.keeper-selection-summary h2 { font-size:19px !important; }
+.keeper-item-type { font-size:12.5px !important; font-weight:800 !important; }
+.keeper-item-body strong,
+.keeper-item-body h3 { font-size:16px !important; line-height:1.3 !important; }
+.keeper-item-body small,
+.keeper-item-body p { font-size:13px !important; line-height:1.48 !important; }
+
+/* 차량호출 폼 */
+#callForm label,
+#callForm .form-label,
+#callForm legend { font-size:14px !important; font-weight:900 !important; }
+#callForm select { min-height:52px !important; font-size:15px !important; font-weight:700 !important; }
+#callForm .guide-match-title strong { font-size:15px !important; }
+#callForm .guide-match-title small { font-size:12.5px !important; }
+#callForm .selected-trip-item strong { font-size:14px !important; }
+#callForm .selected-trip-item small { font-size:12.5px !important; }
+
+/* 가이드 매칭 카드 */
+.guide-card h3,
+.guide-card .guide-name { font-size:18px !important; line-height:1.25 !important; }
+.guide-card .guide-meta,
+.guide-card small { font-size:12.5px !important; }
+.guide-card .guide-detail strong,
+.guide-card .guide-detail h4 { font-size:15px !important; line-height:1.35 !important; }
+.guide-card .guide-detail p,
+.guide-card .guide-detail li { font-size:13.5px !important; line-height:1.55 !important; }
+.guide-card .guide-detail li + li { margin-top:3px !important; }
+.guide-card button { font-size:15px !important; font-weight:900 !important; }
+
+/* 카드형 콘텐츠 */
 .mini-card-body h3,
 .foru-category-body h2,
-.foru-special-body strong {
-  font-size: 14px !important;
-  line-height: 1.25 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
+.foru-special-body strong { font-size:15px !important; line-height:1.25 !important; white-space:nowrap !important; overflow:hidden !important; text-overflow:ellipsis !important; }
 .mini-card-body p,
 .foru-category-body p,
-.foru-special-body p {
-  font-size: 10.5px !important;
-  line-height: 1.42 !important;
-}
+.foru-special-body p { font-size:12.5px !important; line-height:1.48 !important; }
 
-@media (max-width: 380px) {
-  .story {
-    flex-basis: 74px !important;
-    min-width: 74px !important;
-  }
+/* 하단 플로팅 메뉴: 한 줄 유지하면서 가독성 확보 */
+.bottom-nav .nav-button span:last-child,
+.bottom-nav-track .nav-button > span:last-child { font-size:11.5px !important; font-weight:900 !important; white-space:nowrap !important; letter-spacing:-.05em !important; }
 
-  .story > span:last-child {
-    font-size: 10.5px !important;
-  }
-
-  .destination-intro h1 {
-    font-size: 22px !important;
-  }
-
-  .destination-intro > p {
-    font-size: 12.5px !important;
-  }
+@media (max-width:380px) {
+  #app { font-size:14px !important; }
+  .story { flex-basis:78px !important; min-width:78px !important; }
+  .story > span:last-child { font-size:11px !important; }
+  .destination-intro h1 { font-size:23px !important; }
+  .destination-intro > p { font-size:13.5px !important; }
+  .guide-card .guide-detail p,
+  .guide-card .guide-detail li { font-size:13px !important; }
+  .bottom-nav .nav-button span:last-child,
+  .bottom-nav-track .nav-button > span:last-child { font-size:10.5px !important; }
 }
